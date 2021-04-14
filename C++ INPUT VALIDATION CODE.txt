@@ -1,0 +1,194 @@
+List of entry to check: " ", "-", "Enter", "--12", "1abcd"
+Conversion you can use: stod(); stoi();
+
+------------------------------------------------------------------------------
+NORMAL INPUT VALIDATION
+------------------------------------------------------------------------------
+	//Declare appropriate variables.
+	int strLength, answerNum = 0;
+	char nextChar;
+
+	//Finding how many chars are there from the user's input.
+	strLength = input.length();
+
+	for (int i = 0; i < strLength; i++) {
+		//If statement to check the input.
+		if (!isdigit(input[i])) {
+
+			//Re-enter the input if it is not integer.
+			cout << "Please type positive integer." << endl;
+			getline(cin, input);
+
+			//Reset the counter and the length of string.
+			strLength = input.length();
+			i = 0;
+		}
+	}
+
+	//Convert the user's answer to integer datatype.
+	for (int j = 0; j < strLength; j++) {
+		nextChar = input[j];
+		answerNum = answerNum * 10 + (nextChar - '0');
+	}
+
+	//Return the answer as an integer value.
+	return answerNum;
+
+------------------------------------------------------------------------------
+INPUT VALIDATION with Negative Numbers
+------------------------------------------------------------------------------
+
+//Declare appropriate variables.
+	int num = 0, strLength = input.length();
+	char numChar;
+	bool fail = false;
+
+	do {
+		//If the entry is wrong, prompts the user to type again.
+		if (fail) {
+			cout << "That is not an integer. Please type an integer." << endl;
+			getline(cin, input);
+			strLength = input.length();
+		}	
+		//First validation restricting "Enter" or "-" sign.
+		if (strLength == 0 || input == "-") {
+			fail = true;
+		}
+		else {			
+			//If the first validation is passed, let fail = false.
+			fail = false;
+
+			//for loop is used to validate each char in the input array.
+			for (int i = 0; i < strLength; i++) {
+
+				//Second validation restricting non-digit char from the first element. It only accepts digits and "-".
+				if (i == 0) {
+					if (Integers::negCheck(input[0])) {
+						fail = true;
+					}
+				}
+				//Third validation restricting non-digit char from the first element. It only accepts digits.
+				else { 
+					if (!isdigit(input[i])) {
+						fail = true;
+					}
+				}
+			}
+		}
+	} while (fail);
+	
+
+	//Convert the user's answer to integer datatype.
+	//First if statement checks whether the input is negative or positive.
+	if (input[0] == '-') {
+		//If the input is negative, it will convert the string input to a positive integer and convert it again to a negative integer.
+		for (int h = 1; h < strLength; h++) {
+			numChar = input[h];
+			num = num * 10 + (numChar - '0');
+		}
+		//After finishing converting from string to the positive integer, the integer is subtracted from 0 to become negative.
+		num = 0 - num;
+	}
+	else {
+		//If the input is positive, it will convert the string input to a positive integer.
+		for (int j = 0; j < strLength; j++) {
+			numChar = input[j];
+			num = num * 10 + (numChar - '0');
+		}
+	}
+
+	//Return the answer as an integer value.
+	return num;
+
+------------------------------------------------------------------------------
+INPUT VALIDATION for Double Data Type
+------------------------------------------------------------------------------
+
+int counter, strLength = input.length();
+	bool numOutOfRange = false, fail = false;
+	
+	do {
+		//If the entry is wrong, prompts the user to type again.
+		if (fail) {
+			if (numOutOfRange) {
+				cout << "Your pay-rate must be greater than or equal to 5 and less than or equal to 15. Please re-type the pay-rate." << endl;
+			}
+			else {
+				cout << "Please enter positive integer." << endl;
+			}
+			getline(cin, input);
+			strLength = input.length();
+		}
+
+		//Reset counter and numberInRange.
+		numOutOfRange = false;
+		counter = 0;
+
+		//First validation restricting "Enter" or "-" sign.
+		if (strLength == 0 || input == ".") {
+			fail = true;
+		}
+		else {
+			//If the first validation is passed, let fail = false.
+			fail = false;
+
+			//for loop is used to validate each char in the input array.
+			for (int i = 0; i < strLength; i++) {
+				//Second validation restricting anything other than digit and '.'.
+				if (check(input[i])) {
+					fail = true;
+				}
+				//Keeps in count of how many period there are.
+				if (input[i] == '.') {
+					counter++;
+				}
+			}
+			//Third validation restricting more than one period.
+			if (counter > 1) {
+				fail = true;
+			}
+			//If the string is good to go for conversion, string will convert into double.
+			if (!fail) {
+				num = stod(input);
+
+				//Fourth validation restricting the number out of range.
+				if (num > 15 || num < 5) {
+					fail = true;
+					numOutOfRange = true;
+				}
+			}
+		}
+	} while (fail);
+
+------------------------------------------------------------------------------
+Function for validation
+------------------------------------------------------------------------------
+
+bool check(const char letter) {
+	switch (letter) {
+	case '.':
+		return false;
+	case '0':
+		return false;
+	case '1':
+		return false;
+	case '2':
+		return false;
+	case '3':
+		return false;
+	case '4':
+		return false;
+	case '5':
+		return false;
+	case '6':
+		return false;
+	case '7':
+		return false;
+	case '8':
+		return false;
+	case '9':
+		return false;
+	default:
+		return true;
+	}
+}
